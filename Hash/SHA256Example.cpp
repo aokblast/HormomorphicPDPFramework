@@ -2,13 +2,15 @@
 // Created by aokblast on 2022/12/25.
 //
 
-#include "SHA256.h"
+
 #include <iostream>
-#include <vector>
+#include <fstream>
+#include <sstream>
+#include "SHA256.h"
 
 using namespace TFHE;
 
-int main() {
+int main(int argc, char *argv[]) {
 	std::vector<CipherText<8>> text;
 	Parameter parameter(110);
 
@@ -18,12 +20,15 @@ int main() {
 	Encryptor<8> byte_encryptor(secretKey, parameter);
 	Encryptor<32> word_encryptor(secretKey, parameter);
 
+	std::fstream fs(argv[1]);
+	std::stringstream buffer;
 
-	for(const auto c : "Hello World!") {
+	buffer << fs.rdbuf();
+
+	for(const auto c : buffer.str()) {
 		text.push_back(byte_encryptor.encrypt((uint8_t)c));
 	}
 
-	text.pop_back();
 
 	auto res = SHA256::hash(text, cloudKey);
 

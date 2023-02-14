@@ -78,12 +78,10 @@ namespace SHA256 {
 		msg_len = msg.size();
 
 		for(int i = 0; i < msg_len; i += 64) {
-			std::cout << "Block: " << (i / 64) << std::endl;
 			array<CipherText<32>, 64> w;
 
 
 			for(int j = 0; j < 64; j += 4) {
-				std::cout << "\tSubblock:" << (j / 4) << std::endl;
 				auto m0 = word_eval.left_shift(byteToWordEncryptText(msg[i + j]), 24), m1 = word_eval.left_shift(byteToWordEncryptText(msg[i + j + 1]), 16)
 								, m2 = word_eval.left_shift(byteToWordEncryptText(msg[i + j + 2]), 8), m3 = byteToWordEncryptText(msg[i + j + 3]);
 
@@ -92,7 +90,6 @@ namespace SHA256 {
 
 
 			for(int j = 16; j < 64; ++j) {
-				std::cout << "\tSubblock:" << j << std::endl;
 
 				const auto s0 = word_eval.xor_gate(right_rotate(w[j - 15], 7, word_eval)
 								, word_eval.xor_gate(right_rotate(w[j - 15], 18, word_eval), word_eval.right_shift(w[j - 15], 3)));
@@ -101,10 +98,6 @@ namespace SHA256 {
 
 				w[j] = word_eval.add(w[j - 16], word_eval.add(s0, word_eval.add(w[j - 7], s1)));
 			}
-
-
-
-			std::cout << "\tInitialize Finished" << std::endl;
 
 			auto a = word_eval.copy(res[0]);
 			auto b = word_eval.copy(res[1]);
@@ -117,7 +110,6 @@ namespace SHA256 {
 
 
 			for(int j = 0; j < 64; ++j) {
-				cout << "\tRun: " << j << std::endl;
 				const auto s0 = word_eval.xor_gate(right_rotate(a, 2, word_eval), word_eval.xor_gate(right_rotate(a, 13, word_eval), right_rotate(a, 22, word_eval)));
 				const auto maj = word_eval.xor_gate(word_eval.and_gate(a, b), word_eval.xor_gate(word_eval.and_gate(a, c), word_eval.and_gate(b, c)));
 				const auto t2 = word_eval.add(s0, maj);
