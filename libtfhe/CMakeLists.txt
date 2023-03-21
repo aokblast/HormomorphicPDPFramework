@@ -11,4 +11,4 @@ file(GLOB SRC_FILES CONFIGURE_DEPENDS src/*.cpp)
 add_library(libtfhe STATIC ${SRC_FILES} ${TFHE_BASE_DIR})
 
 add_executable(libtfhe_test example/libtfhe_test.cpp)
-target_link_libraries(libtfhe_test libtfhe tfhe-spqlios-fma)
+target_link_libraries(libtfhe_test libtfhe tfhe-spqlios-avx)

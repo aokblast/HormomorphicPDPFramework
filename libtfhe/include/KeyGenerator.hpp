@@ -5,13 +5,14 @@
 #include "SecretKey.hpp"
 
 namespace TFHE {
-  class KeyGenerator {
-  private:
-    Parameter _param;
-  public:
-    explicit KeyGenerator(const Parameter& param);
-    [[nodiscard]] SecretKey generate_secret_key() const;
-  };
+    class KeyGenerator {
+    private:
+        Parameter _param;
+    public:
+        explicit KeyGenerator(const Parameter &param);
+
+        [[nodiscard]] SecretKey generate_secret_key() const;
+    };
 }
 
 

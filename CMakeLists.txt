@@ -3,8 +3,8 @@ project(HormomorphicHashChecker)
 
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(SEAL 4.0.0 EXACT REQUIRED)
-find_package(Boost 1.74.0 EXACT REQUIRED)
+find_package(SEAL 4.1.1 EXACT REQUIRED)
+find_package(Boost 1.81.0 EXACT REQUIRED)
 
 
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
@@ -12,6 +12,7 @@ INCLUDE_DIRECTORIES(./Hash)
 INCLUDE_DIRECTORIES( ./libtfhe/include /usr/local/include/)
 
 add_subdirectory(libtfhe)
+add_subdirectory(libtfhe_openfhe)
 
 add_executable(HormomorphicHashChecker main.cpp Hash/SHA256.cpp Hash/SHA256.h)
 add_executable(Server Server/Server.cpp Server/Server.h Server/main.cpp common.h)
@@ -25,5 +26,5 @@ target_link_libraries(Server LINK_PUBLIC ${Boost_LIBRARIES})
 target_link_libraries(Client PRIVATE SEAL::seal)
 target_link_libraries(Client LINK_PUBLIC ${Boost_LIBRARIES})
 
-target_link_libraries(SHA256Test libtfhe tfhe-spqlios-fma)
-target_link_libraries(MD5Test libtfhe tfhe-spqlios-fma)
+target_link_libraries(SHA256Test libtfhe tfhe-spqlios-avx)
+target_link_libraries(MD5Test libtfhe tfhe-spqlios-avx)
