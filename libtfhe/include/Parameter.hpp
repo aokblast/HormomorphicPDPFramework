@@ -10,9 +10,11 @@ namespace TFHE {
     class Parameter;
 }
 
-std::ostream &operator<<(std::ostream &os, const TFHE::Parameter &param);
+std::ostream &
+operator<<(std::ostream &os, const TFHE::Parameter &param);
 
-std::istream &operator>>(std::istream &is, TFHE::Parameter &param);
+std::istream &
+operator>>(std::istream &is, TFHE::Parameter &param);
 
 namespace TFHE {
     class Parameter {
@@ -20,9 +22,11 @@ namespace TFHE {
         std::shared_ptr<TFheGateBootstrappingParameterSet> _param;
 
     public:
-        friend std::ostream &(::operator<<)(std::ostream &os, const TFHE::Parameter &param);
+        friend std::ostream &
+        (::operator<<)(std::ostream &os, const TFHE::Parameter &param);
 
-        friend std::istream &(::operator>>)(std::istream &is, TFHE::Parameter &param);
+        friend std::istream &
+        (::operator>>)(std::istream &is, TFHE::Parameter &param);
 
         friend class KeyGenerator;
 
@@ -36,4 +40,3 @@ namespace TFHE {
         explicit Parameter(const TFheGateBootstrappingParameterSet *);
     };
 }
-

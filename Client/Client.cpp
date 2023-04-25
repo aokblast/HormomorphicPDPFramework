@@ -11,11 +11,13 @@
 namespace asio = boost::asio;
 
 
-const seal::Evaluator &Client::get_evaluator() const {
+const seal::Evaluator
+&Client::get_evaluator() const {
     return *evaluator;
 }
 
-void Client::run() {
+void
+Client::run() {
     while (true) {
         auto socket = std::make_unique<asio::ip::tcp::socket>(service);
         acceptor.accept(*socket);
@@ -25,7 +27,8 @@ void Client::run() {
     }
 }
 
-void Client::client_handler(std::unique_ptr<asio::ip::tcp::socket> socket) {
+void
+Client::client_handler(std::unique_ptr<asio::ip::tcp::socket> socket) {
     using namespace std::chrono_literals;
 
     boost::array<char, 319530> buf;

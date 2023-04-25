@@ -25,12 +25,13 @@ namespace SHA256 {
              0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2};
 
 
-    template<size_t Sz>
-    inline static CipherText <Sz> right_rotate(const CipherText <Sz> &num, size_t offset, const Evaluator <Sz> &eval) {
+    template<size_t Sz> inline static CipherText <Sz>
+    right_rotate(const CipherText <Sz> &num, size_t offset, const Evaluator <Sz> &eval) {
         return eval.or_gate(eval.right_shift(num, offset), eval.left_shift(num, Sz - offset));
     }
 
-    array<CipherText<32>, 8> hash(const vector <CipherText<8>> &_message, const CloudKey &key) {
+    array<CipherText<32>, 8> &&
+    hash(const vector <CipherText<8>> &_message, const CloudKey &key) {
         array<CipherText<32>, 8> res;
         array<CipherText<32>, 64> SEGMENT;
 
@@ -149,7 +150,7 @@ namespace SHA256 {
 
         }
 
-        return res;
+        return std::move(res);
     }
 
 

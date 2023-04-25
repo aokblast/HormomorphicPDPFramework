@@ -11,8 +11,7 @@ namespace TFHE {
     public:
         explicit KeyGenerator(const Parameter &param);
 
-        [[nodiscard]] SecretKey generate_secret_key() const;
+        SecretKey
+        generate_secret_key() const;
     };
 }
-
-

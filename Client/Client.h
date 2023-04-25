@@ -15,21 +15,25 @@ class Client {
     boost::asio::ip::tcp::acceptor acceptor;
     const static size_t DEFAULT_PORT = 25565;
 
-    static void client_handler(std::unique_ptr<boost::asio::ip::tcp::socket> socket);
+    static void
+    client_handler(std::unique_ptr<boost::asio::ip::tcp::socket> socket);
 
 public:
 
     Client() = delete;
 
-    Client &operator=(const Client &) = delete;
+    Client &
+    operator=(const Client &) = delete;
 
     Client(const Client &) = delete;
 
     Client(const boost::asio::ip::tcp::endpoint &endpoint) : service(), acceptor(service, endpoint) {}
 
-    void run();
+    void
+    run();
 
-    const seal::Evaluator &get_evaluator() const;
+    const seal::Evaluator
+    &get_evaluator() const;
 };
 
 

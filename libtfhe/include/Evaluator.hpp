@@ -13,12 +13,14 @@ namespace TFHE {
         CloudKey _key;
         std::shared_ptr<CipherText<SZ>> zero, one;
 
-        void binary_mux_inplace(const LweSample *cond, const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        void
+        binary_mux_inplace(const LweSample *cond, const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             for (size_t i = 0; i < SZ; ++i)
                 bootsMUX(lhs[i], cond, lhs[i], rhs[i]);
         }
 
-        CipherText<SZ> binary_mux(const LweSample *cond, const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        CipherText<SZ>
+        binary_mux(const LweSample *cond, const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             res.set(0, _key);
 
@@ -37,91 +39,104 @@ namespace TFHE {
             one->set(1, cloudKey);
         }
 
-        [[nodiscard]] Parameter get_parameter() const {
+        Parameter
+        get_parameter() const {
             return _key.get_parameter();
         }
 
 
-        CipherText<SZ> constant(uint64_t val) const {
+        CipherText<SZ>&&
+        constant(uint64_t val) const {
             CipherText<SZ> res(_key.get_parameter());
 
             for (size_t i = 0; i < SZ; ++i)
                 bootsCONSTANT(res[i], val & 1ull, _key._key.get()), val >>= 1;
 
-            return res;
+            return std::move(res);
         }
 
 
-        void assign(CipherText<SZ> &text, uint64_t val) const {
+        void
+        assign(CipherText<SZ> &text, uint64_t val) const {
             for (size_t i = 0; i < SZ; ++i)
                 bootsCONSTANT(text[i], val & 1ull, _key._key.get()), val >>= 1;
         }
 
-        void not_gate_inplace(CipherText<SZ> &lhs) const {
+        void
+        not_gate_inplace(CipherText<SZ> &lhs) const {
             for (size_t i = 0; i < SZ; ++i)
                 bootsNOT(lhs[i], lhs[i], _key._key.get());
         }
 
-        CipherText<SZ> not_gate(const CipherText<SZ> &lhs) const {
+        CipherText<SZ>&&
+        not_gate(const CipherText<SZ> &lhs) const {
             CipherText<SZ> res(_key.get_parameter());
 
             for (int i = 0; i < SZ; ++i)
                 bootsNOT(res[i], lhs[i], _key._key.get());
 
-            return res;
+            return std::move(res);
         }
 
-        void copy_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        void
+        copy_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             for (size_t i = 0; i < SZ; ++i)
                 bootsCOPY(lhs[i], rhs[i], _key._key.get());
         }
 
-        CipherText<SZ> copy(const CipherText<SZ> &lhs) const {
+        CipherText<SZ> &&
+        copy(const CipherText<SZ> &lhs) const {
             CipherText<SZ> res(_key.get_parameter());
             res.set(0, _key);
 
             for (size_t i = 0; i < SZ; ++i)
                 bootsCOPY(res[i], lhs[i], _key._key.get());
 
-            return res;
+            return std::move(res);
         }
 
-        void nand_gate_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        void
+        nand_gate_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             for (size_t i = 0; i < SZ; ++i)
                 bootsNAND(lhs[i], lhs[i], rhs[i], _key._key.get());
         }
 
-        CipherText<SZ> nand_gate(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        CipherText<SZ> &&
+        nand_gate(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             res.set(0, _key);
 
             for (size_t i = 0; i < SZ; ++i)
                 bootsNAND(res[i], lhs[i], rhs[i], _key._key.get());
 
-            return res;
+            return std::move(res);
         }
 
-        void or_gate_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        void
+        or_gate_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             for (size_t i = 0; i < SZ; ++i)
                 bootsOR(lhs[i], lhs[i], rhs[i], _key._key.get());
         }
 
-        CipherText<SZ> or_gate(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        CipherText<SZ> &&
+        or_gate(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             res.set(0, _key);
 
             for (size_t i = 0; i < SZ; ++i)
                 bootsOR(res[i], lhs[i], rhs[i], _key._key.get());
 
-            return res;
+            return std::move(res);
         }
 
-        void and_gate_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        void
+        and_gate_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             for (size_t i = 0; i < SZ; ++i)
                 bootsAND(lhs[i], lhs[i], rhs[i], _key._key.get());
         }
 
-        CipherText<SZ> and_gate(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        CipherText<SZ>
+        and_gate(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             res.set(0, _key);
 
@@ -131,44 +146,49 @@ namespace TFHE {
             return res;
         }
 
-        void xor_gate_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        void
+        xor_gate_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             for (size_t i = 0; i < SZ; ++i)
                 bootsXOR(lhs[i], lhs[i], rhs[i], _key._key.get());
         }
 
-        CipherText<SZ> xor_gate(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        CipherText<SZ> &&
+        xor_gate(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             res.set(0, _key);
 
             for (size_t i = 0; i < SZ; ++i)
                 bootsXOR(res[i], lhs[i], rhs[i], _key._key.get());
 
-            return res;
+            return std::move(res);
         }
 
-        void mux_inplace(const CipherText<SZ> &cond, CipherText<SZ> &lhs, const CipherText<SZ> &rhs) {
+        void
+        mux_inplace(const CipherText<SZ> &cond, CipherText<SZ> &lhs, const CipherText<SZ> &rhs) {
             for (size_t i = 0; i < SZ; ++i)
                 bootsMUX(lhs[i], cond[i], lhs[i], rhs[i], _key._key.get());
         }
 
-        CipherText<SZ> mux(const CipherText<SZ> &cond, const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        CipherText<SZ> &&
+        mux(const CipherText<SZ> &cond, const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             res.set(0, _key);
 
             for (size_t i = 0; i < SZ; ++i)
                 bootsMUX(res[i], cond[i], lhs[i], rhs[i], _key._key.get());
 
-            return res;
+            return std::move(res);
         }
 
-        CipherText<SZ> binary_mux_inplace(const CipherText<1> &cond, CipherText<SZ> &lhs, const CipherText<SZ> &rhs) {
+        CipherText<SZ>
+        binary_mux_inplace(const CipherText<1> &cond, CipherText<SZ> &lhs, const CipherText<SZ> &rhs) {
             for (size_t i = 0; i < SZ; ++i)
                 bootsMUX(lhs[i], cond[0], lhs[i], rhs[i], _key._key.get());
 
             return lhs;
         }
 
-        CipherText<SZ>
+        CipherText<SZ> &&
         binary_mux(const CipherText<1> &cond, const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             res.set(0, _key);
@@ -176,10 +196,11 @@ namespace TFHE {
             for (size_t i = 0; i < SZ; ++i)
                 bootsMUX(res[i], cond[0], lhs[i], rhs[i], _key._key.get());
 
-            return res;
+            return std::move(res);
         }
 
-        void left_shift_inplace(CipherText<SZ> &lhs, uint64_t shift) const {
+        void
+        left_shift_inplace(CipherText<SZ> &lhs, uint64_t shift) const {
             assert(SZ >= shift);
 
             for (size_t i = SZ - 1; i >= shift; --i)
@@ -189,7 +210,8 @@ namespace TFHE {
                 bootsCONSTANT(lhs[i], 0, _key._key.get());
         }
 
-        CipherText<SZ> left_shift(const CipherText<SZ> &lhs, uint64_t shift) const {
+        CipherText<SZ> &&
+        left_shift(const CipherText<SZ> &lhs, uint64_t shift) const {
             assert(SZ >= shift);
             CipherText<SZ> res(_key.get_parameter());
             res.set(0, _key);
@@ -197,10 +219,11 @@ namespace TFHE {
             for (size_t i = shift; i < SZ; ++i)
                 bootsCOPY(res[i], lhs[i - shift], _key._key.get());
 
-            return res;
+            return std::move(res);
         }
 
-        void right_shift_inplace(CipherText<SZ> &lhs, uint64_t shift) const {
+        void
+        right_shift_inplace(CipherText<SZ> &lhs, uint64_t shift) const {
             assert(SZ >= shift);
 
             for (size_t i = 0; i < SZ - shift; ++i)
@@ -210,7 +233,8 @@ namespace TFHE {
                 bootsCONSTANT(lhs[i], 0, _key._key.get());
         }
 
-        CipherText<SZ> right_shift(const CipherText<SZ> &lhs, uint64_t shift) const {
+        CipherText<SZ> &&
+        right_shift(const CipherText<SZ> &lhs, uint64_t shift) const {
             assert(SZ >= shift);
 
             CipherText<SZ> res(_key.get_parameter());
@@ -219,22 +243,25 @@ namespace TFHE {
             for (size_t i = shift; i < SZ; ++i)
                 bootsCOPY(res[i - shift], lhs[i], _key._key.get());
 
-            return res;
+            return std::move(res);
         }
 
-        CipherText<1> extractBit(const CipherText<SZ> &lhs, uint64_t bit) const {
+        CipherText<1> &&
+        extractBit(const CipherText<SZ> &lhs, uint64_t bit) const {
             CipherText<1> res(_key.get_parameter());
 
             bootsCOPY(res[0], lhs[bit], _key._key.get());
 
-            return res;
+            return std::move(res);
         }
 
-        void setBit(CipherText<SZ> &lhs, const CipherText<1> &rhs, uint64_t bit) const {
+        void
+        setBit(CipherText<SZ> &lhs, const CipherText<1> &rhs, uint64_t bit) const {
             bootsCOPY(lhs[bit], rhs[0], _key._key.get());
         }
 
-        void add_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        void
+        add_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<2> carry(_key.get_parameter());
             CipherText<2> tmp(_key.get_parameter());
             carry.set(false, _key);
@@ -254,14 +281,16 @@ namespace TFHE {
 
         }
 
-        CipherText<SZ> add(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        CipherText<SZ> &&
+        add(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             copy_inplace(res, lhs);
             add_inplace(res, rhs);
-            return res;
+            return std::move(res);
         }
 
-        void subtract_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        void
+        subtract_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> lead(_key.get_parameter());
             CipherText<SZ> tmp(_key.get_parameter());
             lead.set(0, _key);
@@ -278,14 +307,16 @@ namespace TFHE {
             }
         }
 
-        CipherText<SZ> subtract(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        CipherText<SZ> &&
+        subtract(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             copy_inplace(res, lhs);
             subtract_inplace(res, rhs);
-            return res;
+            return std::move(res);
         }
 
-        void multiply_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        void
+        multiply_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             auto tmp = copy(lhs);
             lhs.set(0, _key);
 
@@ -293,14 +324,16 @@ namespace TFHE {
                 add_inplace(lhs, binary_mux(rhs[i], left_shift(tmp, i), *zero));
         }
 
-        CipherText<SZ> multiply(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        CipherText<SZ> &&
+        multiply(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             copy_inplace(res, lhs);
             multiply_inplace(res, rhs);
-            return res;
+            return std::move(res);
         }
 
-        CipherText<1> compare(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        CipherText<1> &&
+        compare(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             auto l = copy(lhs);
             CipherText<SZ> lead(_key.get_parameter());
             CipherText<SZ> tmp(_key.get_parameter());
@@ -322,20 +355,22 @@ namespace TFHE {
             bootsCOPY(res[0], lc, _key._key.get());
             bootsNOT(res[0], res[0], _key._key.get());
 
-            return res;
+            return std::move(res);
         }
 
-        CipherText<1> overflow(const CipherText<SZ> &lhs, size_t shift) const {
+        CipherText<1> &&
+        overflow(const CipherText<SZ> &lhs, size_t shift) const {
             CipherText<1> res(_key.get_parameter());
             res.set(0, _key);
 
             for (size_t i = SZ - shift; i < SZ; ++i)
                 bootsOR(res[0], res[0], lhs[i], _key._key.get());
 
-            return res;
+            return std::move(res);
         }
 
-        CipherText<SZ> divide_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        CipherText<SZ>
+        divide_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> tmp(_key.get_parameter());
             CipherText<1> cmpVal(_key.get_parameter());
             tmp.set(0, _key);
@@ -352,23 +387,26 @@ namespace TFHE {
             return tmp2;
         }
 
-        CipherText<SZ> divide(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        CipherText<SZ> &&
+        divide(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             copy_inplace(res, lhs);
             auto mod = divide_inplace(res, rhs);
-            return res;
+            return std::move(res);
         }
 
-        void module_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
+        void
+        module_inplace(CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             auto res = divide_inplace(lhs, rhs);
             copy_inplace(lhs, res);
         }
 
-        CipherText<SZ> module(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) {
+        CipherText<SZ> &&
+        module(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) {
             CipherText<SZ> res(_key.get_parameter());
             copy_inplace(res, lhs);
             module_inplace(res, rhs);
-            return res;
+            return std::move(res);
         }
 
     };

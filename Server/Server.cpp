@@ -30,7 +30,8 @@ Server::Server(size_t poly_module_degree, size_t plain_module, seal::scheme_type
     decryptor = std::make_unique<seal::Decryptor>(*context, secret_key);
 }
 
-seal::Plaintext Server::decrypt(std::istream &text_file) const {
+seal::Plaintext
+Server::decrypt(std::istream &text_file) const {
     Ciphertext text;
     Plaintext p;
     text.load(*context, text_file);
@@ -38,7 +39,8 @@ seal::Plaintext Server::decrypt(std::istream &text_file) const {
     return p;
 }
 
-void Server::run(const std::vector<uint64_t> &vals) {
+void
+Server::run(const std::vector<uint64_t> &vals) {
 
     assert(workers.size() >= vals.size());
 
@@ -61,13 +63,15 @@ void Server::run(const std::vector<uint64_t> &vals) {
     }
 }
 
-seal::PublicKey Server::handshake() const {
+seal::PublicKey
+Server::handshake() const {
     PublicKey key;
     keygen->create_public_key(key);
     return key;
 }
 
-void Server::add_worker(const std::string &address, size_t port_number) {
+void
+Server::add_worker(const std::string &address, size_t port_number) {
     ip::tcp::endpoint endpoint(ip::address::from_string(address), port_number);
     auto key = handshake();
 
@@ -83,15 +87,18 @@ void Server::add_worker(const std::string &address, size_t port_number) {
     std::cout << "Connect to " << endpoint.address() << ":" << endpoint.port() << " success!\n";
 }
 
-seal::Serializable<seal::Ciphertext> Server::Worker::encrypt(const seal::Plaintext &text) const {
+seal::Serializable<seal::Ciphertext>
+Server::Worker::encrypt(const seal::Plaintext &text) const {
     return encryptor->encrypt(text);
 }
 
-void Server::Worker::encrypt(const seal::Plaintext &text, seal::Ciphertext &ciphertext) const {
+void
+Server::Worker::encrypt(const seal::Plaintext &text, seal::Ciphertext &ciphertext) const {
     encryptor->encrypt(text, ciphertext);
 }
 
-void Server::Worker::work(const uint64_t x) {
+void
+Server::Worker::work(const uint64_t x) {
     using namespace std::chrono_literals;
 
     auto x_cipher = encrypt(uint64_to_hex_string(x));
@@ -106,7 +113,8 @@ void Server::Worker::work(const uint64_t x) {
 
 }
 
-const std::pair<boost::array<char, 319530> &, size_t> Server::Worker::get_res() {
+const std::pair<boost::array<char, 319530> &, size_t>
+Server::Worker::get_res() {
     return {buf, buf_len};
 }
 
@@ -126,5 +134,3 @@ Server::Worker::build(std::stringstream &params_stream, const seal::SEALContext 
     sock.send(buffer(params_stream.str(), params_stream.str().length()));
     return result;
 }
-
-

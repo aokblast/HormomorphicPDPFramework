@@ -9,9 +9,11 @@ namespace TFHE {
     class CloudKey;
 }
 
-std::ostream &operator<<(std::ostream &os, const TFHE::CloudKey &param);
+std::ostream &
+operator<<(std::ostream &os, const TFHE::CloudKey &param);
 
-std::istream &operator>>(std::istream &is, TFHE::CloudKey &param);
+std::istream &
+operator>>(std::istream &is, TFHE::CloudKey &param);
 
 namespace TFHE {
     class CloudKey {
@@ -31,11 +33,12 @@ namespace TFHE {
         template<size_t SZ> friend
         class CipherText;
 
-        [[nodiscard]] Parameter get_parameter() const;
+        Parameter get_parameter() const;
 
-        friend std::ostream &(::operator<<)(std::ostream &os, const TFHE::CloudKey &param);
+        friend std::ostream &
+        (::operator<<)(std::ostream &os, const TFHE::CloudKey &param);
 
-        friend std::istream &(::operator>>)(std::istream &is, TFHE::CloudKey &param);
+        friend std::istream &
+        (::operator>>)(std::istream &is, TFHE::CloudKey &param);
     };
 }
-

@@ -36,13 +36,14 @@ namespace MD5 {
                                                     0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
                                                     0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391};
 
-    template<size_t Sz>
-    inline static CipherText <Sz> left_rotate(const CipherText <Sz> &num, size_t offset, const Evaluator <Sz> &eval) {
+    template<size_t Sz> inline static CipherText <Sz>
+    left_rotate(const CipherText <Sz> &num, size_t offset, const Evaluator <Sz> &eval) {
         return eval.or_gate(eval.left_shift(num, offset), eval.right_shift(num, Sz - offset));
     }
 
 
-    static void swapByteOrder(CipherText<32> &cip, const Evaluator<32> &word_eval) {
+    static void
+    swapByteOrder(CipherText<32> &cip, const Evaluator<32> &word_eval) {
         cip = word_eval.or_gate(word_eval.right_shift(cip, 24), word_eval.or_gate(
                 word_eval.and_gate(word_eval.left_shift(cip, 8), word_eval.constant(0x00FF0000)),
                 word_eval.or_gate(word_eval.and_gate(word_eval.right_shift(cip, 8), word_eval.constant(0x0000FF00)),
@@ -50,13 +51,12 @@ namespace MD5 {
     }
 
 
-    array<CipherText<32>, 4> hash(const vector <CipherText<8>> &_message, const CloudKey &key) {
+    array<CipherText<32>, 4> &&
+    hash(const vector<CipherText<8>> &_message, const CloudKey &key) {
         const Evaluator<32> word_eval(key);
         const Evaluator<8> byte_eval(key);
 
-
         array<CipherText<32>, 64> k;
-
 
         for (int i = 0; i < 64; ++i)
             k[i] = word_eval.constant(_k[i]);
@@ -74,7 +74,6 @@ namespace MD5 {
         uint64_t msg_len = msg.size();
         uint64_t padding_len = ((msg_len % 64ull) > 56ull) ? (56ull + (64ull - msg_len % 64ull)) : (56ull -
                                                                                                     msg_len % 64ull);
-
 
         for (int i = 0; i < padding_len; ++i)
             msg.emplace_back(byte_eval.constant(0));
@@ -157,8 +156,7 @@ namespace MD5 {
         for (auto &c: h)
             swapByteOrder(c, word_eval);
 
-        return h;
+        return std::move(h);
     }
 
 }
-

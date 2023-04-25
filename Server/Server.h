@@ -26,9 +26,11 @@ class Server {
         asio::ip::tcp::socket sock;
 
 
-        [[nodiscard]] seal::Serializable<seal::Ciphertext> encrypt(const seal::Plaintext &text) const;
+        seal::Serializable<seal::Ciphertext>
+        encrypt(const seal::Plaintext &text) const;
 
-        void encrypt(const seal::Plaintext &text, seal::Ciphertext &ciphertext) const;
+        void
+        encrypt(const seal::Plaintext &text, seal::Ciphertext &ciphertext) const;
 
     public:
         explicit Worker(const seal::SEALContext &context, const seal::PublicKey &key) : service(), sock(service) {
@@ -42,12 +44,15 @@ class Server {
         build(std::stringstream &params_stream, const seal::SEALContext &context, const seal::PublicKey &key,
               const asio::ip::tcp::endpoint &endpoint);
 
-        void work(uint64_t data);
+        void
+        work(uint64_t data);
 
-        const std::pair<boost::array<char, 319530> &, size_t> get_res();
+        const std::pair<boost::array<char, 319530> &, size_t>
+        get_res();
 
 
-        inline asio::ip::tcp::socket &get_socket() {
+        inline asio::ip::tcp::socket
+        &get_socket() {
             return sock;
         }
     };
@@ -61,23 +66,24 @@ class Server {
     std::unique_ptr<seal::Decryptor> decryptor;
     std::vector<std::shared_ptr<Worker>> workers;
 
-    seal::PublicKey handshake() const;
+    seal::PublicKey
+    handshake() const;
 
 public:
     Server() = delete;
-
     Server &operator=(const Server &) = delete;
-
     Server(const Server &) = delete;
 
     explicit Server(size_t poly_module_degree, size_t plain_module, seal::scheme_type type);
 
+    seal::Plaintext
+    decrypt(std::istream &text) const;
 
-    seal::Plaintext decrypt(std::istream &text) const;
+    void
+    add_worker(const std::string &address, size_t port_number = DEFAULT_PORT_NUMBER);
 
-    void add_worker(const std::string &address, size_t port_number = DEFAULT_PORT_NUMBER);
-
-    void run(const std::vector<uint64_t> &);
+    void
+    run(const std::vector<uint64_t> &);
 
 };
 

@@ -11,8 +11,7 @@
 using namespace TFHE;
 
 int main(int argc, char *argv[]) {
-    std::vector<CipherText < 8>>
-    text;
+    std::vector<CipherText <8>> text;
     Parameter parameter(110);
 
     KeyGenerator keyGenerator(parameter);
@@ -30,7 +29,7 @@ int main(int argc, char *argv[]) {
         text.push_back(byte_encryptor.encrypt((uint8_t) c));
     }
 
-    auto res = MD5::hash(text, cloudKey);
+    std::array<CipherText<32>, 4> res = MD5::hash(text, cloudKey);
 
     for (const auto &num: res)
         std::cout << std::hex << word_encryptor.decrypt(num);

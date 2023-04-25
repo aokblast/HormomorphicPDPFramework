@@ -10,9 +10,11 @@ namespace TFHE {
 }
 
 
-std::istream &operator>>(std::istream &is, TFHE::SecretKey &rhs);
+std::istream &operator>>
+(std::istream &is, TFHE::SecretKey &rhs);
 
-std::ostream &operator<<(std::ostream &os, const TFHE::SecretKey &rhs);
+std::ostream &operator<<
+(std::ostream &os, const TFHE::SecretKey &rhs);
 
 namespace TFHE {
     class SecretKey {
@@ -27,11 +29,13 @@ namespace TFHE {
         template<std::size_t SZ> friend
         class Encryptor;
 
-        friend std::istream &(::operator>>)(std::istream &is, TFHE::SecretKey &key);
+        friend std::istream &
+        (::operator>>)(std::istream &is, TFHE::SecretKey &key);
 
-        friend std::ostream &(::operator<<)(std::ostream &os, const TFHE::SecretKey &key);
+        friend std::ostream &
+        (::operator<<)(std::ostream &os, const TFHE::SecretKey &key);
 
-        [[nodiscard]] CloudKey get_cloud_key() const;
+        CloudKey
+        get_cloud_key() const;
     };
 }
-
