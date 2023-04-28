@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 find_package(SEAL 4.1.1 EXACT REQUIRED)
-find_package(Boost 1.81.0 EXACT REQUIRED)
+find_package(Boost 1.81.0)
 
 SET(CMAKE_CXX_FLAGS_DEBUG "-O0 -Wall -g ")
 SET(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall")
@@ -36,5 +36,5 @@ target_link_libraries(Server LINK_PUBLIC ${Boost_LIBRARIES})
 target_link_libraries(Client SEAL::seal)
 target_link_libraries(Client LINK_PUBLIC ${Boost_LIBRARIES})
 
-target_link_libraries(SHA256Test libtfhe tfhe-spqlios-avx)
-target_link_libraries(MD5Test libtfhe tfhe-spqlios-avx)
+target_link_libraries(SHA256Test libtfhe tfhe-spqlios-fma)
+target_link_libraries(MD5Test libtfhe tfhe-spqlios-fma)
