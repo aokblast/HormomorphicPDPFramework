@@ -63,7 +63,7 @@ namespace TFHE {
                                                           [](LweSample *sample) {
                                                               delete_gate_bootstrapping_ciphertext_array(SZ, sample);
                                                           }) {
-            _p = cip.get_raw_parameter();
+            _p = Parameter(cip.get_raw_parameter());
             for(int i = 0; i < SZ; ++i)
                 bootsCOPY((*this)[i], cip[i], key._key.get());
         }
@@ -93,6 +93,4 @@ namespace TFHE {
         template<std::size_t T> friend std::ostream &
         (::operator<<)(std::ostream &os, const TFHE::CipherText<T> &text);
     };
-
-
 }
