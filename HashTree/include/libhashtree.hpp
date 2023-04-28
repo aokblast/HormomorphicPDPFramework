@@ -1,6 +1,7 @@
 #include "libtfhe_core.h"
 #include <memory>
 #include <vector>
+#include <array>
 
 class HashTree {
 public:
@@ -10,17 +11,19 @@ private:
     class _Node {
     public:
         hash_value_t hash_value;
-        std::unique_ptr<_Node> left, right;
+        _Node *left, *right;
+
+				explicit _Node(hash_value_t &&value);
     };
 
     _Node _root;
     const TFHE::CloudKey _key;
 
-    static std::vector<hash_value_t>
-    &&_hash_files(const std::vector<file_stream_t> &files, const TFHE::CloudKey &key);
+    static std::vector<hash_value_t> &&
+		_hash_files(const std::vector<file_stream_t> &files, const TFHE::CloudKey &key);
 
     static _Node
-    _recursive_build_tree(const std::vector<hash_value_t> &hashs, int l, int r);
+		_build_tree(std::vector<hash_value_t> hashes, const TFHE::CloudKey &key);
 public:
     HashTree(const std::vector<file_stream_t> &files, const TFHE::CloudKey &key);
 
