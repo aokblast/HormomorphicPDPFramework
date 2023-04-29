@@ -45,14 +45,14 @@ namespace TFHE {
         }
 
 
-        CipherText<SZ>&&
+        CipherText<SZ>
         constant(uint64_t val) const {
             CipherText<SZ> res(_key.get_parameter());
 
             for (size_t i = 0; i < SZ; ++i)
                 bootsCONSTANT(res[i], val & 1ull, _key._key.get()), val >>= 1;
 
-            return std::move(res);
+            return res;
         }
 
 
@@ -68,14 +68,14 @@ namespace TFHE {
                 bootsNOT(lhs[i], lhs[i], _key._key.get());
         }
 
-        CipherText<SZ>&&
+        CipherText<SZ>
         not_gate(const CipherText<SZ> &lhs) const {
             CipherText<SZ> res(_key.get_parameter());
 
-            for (int i = 0; i < SZ; ++i)
+            for (size_t i = 0; i < SZ; ++i)
                 bootsNOT(res[i], lhs[i], _key._key.get());
 
-            return std::move(res);
+            return res;
         }
 
         void
@@ -84,7 +84,7 @@ namespace TFHE {
                 bootsCOPY(lhs[i], rhs[i], _key._key.get());
         }
 
-        CipherText<SZ> &&
+        CipherText<SZ>
         copy(const CipherText<SZ> &lhs) const {
             CipherText<SZ> res(_key.get_parameter());
             res.set(0, _key);
@@ -92,7 +92,7 @@ namespace TFHE {
             for (size_t i = 0; i < SZ; ++i)
                 bootsCOPY(res[i], lhs[i], _key._key.get());
 
-            return std::move(res);
+            return res;
         }
 
         void
@@ -101,7 +101,7 @@ namespace TFHE {
                 bootsNAND(lhs[i], lhs[i], rhs[i], _key._key.get());
         }
 
-        CipherText<SZ> &&
+        CipherText<SZ>
         nand_gate(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             res.set(0, _key);
@@ -109,7 +109,7 @@ namespace TFHE {
             for (size_t i = 0; i < SZ; ++i)
                 bootsNAND(res[i], lhs[i], rhs[i], _key._key.get());
 
-            return std::move(res);
+            return res;
         }
 
         void
@@ -118,7 +118,7 @@ namespace TFHE {
                 bootsOR(lhs[i], lhs[i], rhs[i], _key._key.get());
         }
 
-        CipherText<SZ> &&
+        CipherText<SZ>
         or_gate(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             res.set(0, _key);
@@ -126,7 +126,7 @@ namespace TFHE {
             for (size_t i = 0; i < SZ; ++i)
                 bootsOR(res[i], lhs[i], rhs[i], _key._key.get());
 
-            return std::move(res);
+            return res;
         }
 
         void
@@ -152,7 +152,7 @@ namespace TFHE {
                 bootsXOR(lhs[i], lhs[i], rhs[i], _key._key.get());
         }
 
-        CipherText<SZ> &&
+        CipherText<SZ>
         xor_gate(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             res.set(0, _key);
@@ -160,7 +160,7 @@ namespace TFHE {
             for (size_t i = 0; i < SZ; ++i)
                 bootsXOR(res[i], lhs[i], rhs[i], _key._key.get());
 
-            return std::move(res);
+            return res;
         }
 
         void
@@ -169,7 +169,7 @@ namespace TFHE {
                 bootsMUX(lhs[i], cond[i], lhs[i], rhs[i], _key._key.get());
         }
 
-        CipherText<SZ> &&
+        CipherText<SZ>
         mux(const CipherText<SZ> &cond, const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             res.set(0, _key);
@@ -177,7 +177,7 @@ namespace TFHE {
             for (size_t i = 0; i < SZ; ++i)
                 bootsMUX(res[i], cond[i], lhs[i], rhs[i], _key._key.get());
 
-            return std::move(res);
+            return res;
         }
 
         CipherText<SZ>
@@ -188,7 +188,7 @@ namespace TFHE {
             return lhs;
         }
 
-        CipherText<SZ> &&
+        CipherText<SZ>
         binary_mux(const CipherText<1> &cond, const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             res.set(0, _key);
@@ -196,7 +196,7 @@ namespace TFHE {
             for (size_t i = 0; i < SZ; ++i)
                 bootsMUX(res[i], cond[0], lhs[i], rhs[i], _key._key.get());
 
-            return std::move(res);
+            return res;
         }
 
         void
@@ -210,7 +210,7 @@ namespace TFHE {
                 bootsCONSTANT(lhs[i], 0, _key._key.get());
         }
 
-        CipherText<SZ> &&
+        CipherText<SZ>
         left_shift(const CipherText<SZ> &lhs, uint64_t shift) const {
             assert(SZ >= shift);
             CipherText<SZ> res(_key.get_parameter());
@@ -219,7 +219,7 @@ namespace TFHE {
             for (size_t i = shift; i < SZ; ++i)
                 bootsCOPY(res[i], lhs[i - shift], _key._key.get());
 
-            return std::move(res);
+            return res;
         }
 
         void
@@ -233,7 +233,7 @@ namespace TFHE {
                 bootsCONSTANT(lhs[i], 0, _key._key.get());
         }
 
-        CipherText<SZ> &&
+        CipherText<SZ>
         right_shift(const CipherText<SZ> &lhs, uint64_t shift) const {
             assert(SZ >= shift);
 
@@ -243,16 +243,16 @@ namespace TFHE {
             for (size_t i = shift; i < SZ; ++i)
                 bootsCOPY(res[i - shift], lhs[i], _key._key.get());
 
-            return std::move(res);
+            return res;
         }
 
-        CipherText<1> &&
+        CipherText<1>
         extractBit(const CipherText<SZ> &lhs, uint64_t bit) const {
             CipherText<1> res(_key.get_parameter());
 
             bootsCOPY(res[0], lhs[bit], _key._key.get());
 
-            return std::move(res);
+            return res;
         }
 
         void
@@ -281,12 +281,12 @@ namespace TFHE {
 
         }
 
-        CipherText<SZ> &&
+        CipherText<SZ>
         add(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             copy_inplace(res, lhs);
             add_inplace(res, rhs);
-            return std::move(res);
+            return res;
         }
 
         void
@@ -307,12 +307,12 @@ namespace TFHE {
             }
         }
 
-        CipherText<SZ> &&
+        CipherText<SZ>
         subtract(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             copy_inplace(res, lhs);
             subtract_inplace(res, rhs);
-            return std::move(res);
+            return res;
         }
 
         void
@@ -324,15 +324,15 @@ namespace TFHE {
                 add_inplace(lhs, binary_mux(rhs[i], left_shift(tmp, i), *zero));
         }
 
-        CipherText<SZ> &&
+        CipherText<SZ>
         multiply(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             copy_inplace(res, lhs);
             multiply_inplace(res, rhs);
-            return std::move(res);
+            return res;
         }
 
-        CipherText<1> &&
+        CipherText<1>
         compare(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             auto l = copy(lhs);
             CipherText<SZ> lead(_key.get_parameter());
@@ -355,10 +355,10 @@ namespace TFHE {
             bootsCOPY(res[0], lc, _key._key.get());
             bootsNOT(res[0], res[0], _key._key.get());
 
-            return std::move(res);
+            return res;
         }
 
-        CipherText<1> &&
+        CipherText<1>
         overflow(const CipherText<SZ> &lhs, size_t shift) const {
             CipherText<1> res(_key.get_parameter());
             res.set(0, _key);
@@ -366,7 +366,7 @@ namespace TFHE {
             for (size_t i = SZ - shift; i < SZ; ++i)
                 bootsOR(res[0], res[0], lhs[i], _key._key.get());
 
-            return std::move(res);
+            return res;
         }
 
         CipherText<SZ>
@@ -387,12 +387,12 @@ namespace TFHE {
             return tmp2;
         }
 
-        CipherText<SZ> &&
+        CipherText<SZ>
         divide(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) const {
             CipherText<SZ> res(_key.get_parameter());
             copy_inplace(res, lhs);
             auto mod = divide_inplace(res, rhs);
-            return std::move(res);
+            return res;
         }
 
         void
@@ -401,12 +401,12 @@ namespace TFHE {
             copy_inplace(lhs, res);
         }
 
-        CipherText<SZ> &&
+        CipherText<SZ>
         module(const CipherText<SZ> &lhs, const CipherText<SZ> &rhs) {
             CipherText<SZ> res(_key.get_parameter());
             copy_inplace(res, lhs);
             module_inplace(res, rhs);
-            return std::move(res);
+            return res;
         }
 
     };

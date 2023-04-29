@@ -19,7 +19,7 @@ private:
     _Node _root;
     const TFHE::CloudKey _key;
 
-    static std::vector<hash_value_t> &&
+    static std::vector<hash_value_t>
 		_hash_files(const std::vector<file_stream_t> &files, const TFHE::CloudKey &key);
 
     static _Node

@@ -1,23 +1,22 @@
 #include <queue>
 #include <algorithm>
 #include "MD5.h"
-#include "libtfhe_core.h"
 #include "libhashtree.hpp"
 
 HashTree::_Node::_Node(hash_value_t &&value): hash_value(std::forward<hash_value_t>(value)), left(nullptr), right(nullptr) {
 }
 
-std::vector<HashTree::hash_value_t> &&
+std::vector<HashTree::hash_value_t>
 HashTree::_hash_files(const std::vector<file_stream_t> &files, const TFHE::CloudKey &key) {
 		std::vector<HashTree::hash_value_t> res;
 
 		for (const auto &file: files)
-				res.emplace_back(MD5::hash(file, key));
+				std::cout << "file finished" << std::endl, res.emplace_back(MD5::hash(file, key));
 
-		return std::move(res);
+		return res;
 }
 
-static std::array<TFHE::CipherText<8>, 4> &&
+static std::array<TFHE::CipherText<8>, 4>
 word_to_byte(const TFHE::CipherText<32> &cip, const TFHE::CloudKey &key) {
 		std::array<TFHE::CipherText<8>, 4> res;
 		TFHE::Evaluator<32> word_eval(key);
@@ -31,7 +30,7 @@ word_to_byte(const TFHE::CipherText<32> &cip, const TFHE::CloudKey &key) {
 
 				res[i] = std::move(tmp);
 		}
-		return std::move(res);
+		return res;
 }
 
 
@@ -42,7 +41,7 @@ HashTree::_build_tree(std::vector<hash_value_t> hashes, const TFHE::CloudKey &ke
 									, [&q](hash_value_t &&hash){q.emplace(std::forward<hash_value_t>(hash));});
 
 		while(q.size() > 1) {
-				int sz = q.size();
+				size_t sz = q.size();
 				while((sz -= 2) > 1) {
 						auto left = std::move(q.front()); q.pop();
 						auto right = std::move(q.front()); q.pop();

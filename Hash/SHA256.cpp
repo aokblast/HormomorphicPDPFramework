@@ -30,7 +30,7 @@ namespace SHA256 {
         return eval.or_gate(eval.right_shift(num, offset), eval.left_shift(num, Sz - offset));
     }
 
-    array<CipherText<32>, 8> &&
+    array<CipherText<32>, 8>
     hash(const vector <CipherText<8>> &_message, const CloudKey &key) {
         array<CipherText<32>, 8> res;
         array<CipherText<32>, 64> SEGMENT;
@@ -56,7 +56,7 @@ namespace SHA256 {
         uint64_t padding_len = ((msg_len % 64ull) > 56ull) ? (56ull + (64ull - msg_len % 64ull)) : (56ull -
                                                                                                     msg_len % 64ull);
 
-        for (int i = 0; i < padding_len; ++i)
+        for (size_t i = 0; i < padding_len; ++i)
             msg.emplace_back(byte_eval.constant(0));
 
         const auto len = to_bigEndian((msg_len - 1) * 8);
@@ -79,7 +79,7 @@ namespace SHA256 {
 
         msg_len = msg.size();
 
-        for (int i = 0; i < msg_len; i += 64) {
+        for (size_t i = 0; i < msg_len; i += 64) {
             array<CipherText<32>, 64> w;
 
 
@@ -150,7 +150,7 @@ namespace SHA256 {
 
         }
 
-        return std::move(res);
+        return res;
     }
 
 

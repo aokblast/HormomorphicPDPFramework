@@ -51,7 +51,7 @@ namespace MD5 {
     }
 
 
-    array<CipherText<32>, 4> &&
+    array<CipherText<32>, 4>
     hash(const vector<CipherText<8>> &_message, const CloudKey &key) {
         const Evaluator<32> word_eval(key);
         const Evaluator<8> byte_eval(key);
@@ -75,7 +75,7 @@ namespace MD5 {
         uint64_t padding_len = ((msg_len % 64ull) > 56ull) ? (56ull + (64ull - msg_len % 64ull)) : (56ull -
                                                                                                     msg_len % 64ull);
 
-        for (int i = 0; i < padding_len; ++i)
+        for (size_t i = 0; i < padding_len; ++i)
             msg.emplace_back(byte_eval.constant(0));
 
         const auto len = to_littleEndian((msg_len - 1) * 8);
@@ -97,7 +97,7 @@ namespace MD5 {
             return word;
         };
 
-        for (int i = 0; i < msg_len; i += 64) {
+        for (size_t i = 0; i < msg_len; i += 64) {
 
             std::array<CipherText<32>, 16> w;
 
@@ -156,7 +156,7 @@ namespace MD5 {
         for (auto &c: h)
             swapByteOrder(c, word_eval);
 
-        return std::move(h);
+        return h;
     }
 
 }
