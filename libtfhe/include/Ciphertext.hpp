@@ -64,7 +64,7 @@ namespace TFHE {
                                                               delete_gate_bootstrapping_ciphertext_array(SZ, sample);
                                                           }) {
             _p = Parameter(cip.get_raw_parameter());
-            for(int i = 0; i < SZ; ++i)
+            for(size_t i = 0; i < SZ; ++i)
                 bootsCOPY((*this)[i], cip[i], key._key.get());
         }
 
