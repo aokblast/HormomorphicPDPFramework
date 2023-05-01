@@ -27,7 +27,7 @@ namespace TFHE {
         uint64_t
         decrypt(const CipherText<SZ> &cip) const {
             uint64_t res = 0;
-            for (size_t i = SZ - 1; i >= 0; --i)
+            for (int i = SZ - 1; i >= 0; --i)
                 res <<= 1, res |= bootsSymDecrypt(cip._sample.get() + i, _key._key.get());
             return res;
         }

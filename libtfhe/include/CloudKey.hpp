@@ -25,6 +25,8 @@ namespace TFHE {
         explicit CloudKey(TFheGateBootstrappingCloudKeySet *key);
 
     public:
+				CloudKey() = default;
+
         friend class SecretKey;
 
         template<size_t SZ> friend

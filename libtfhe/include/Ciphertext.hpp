@@ -22,8 +22,8 @@ template<std::size_t SZ> std::istream &
     return is;
 }
 
-template<std::size_t SZ> std::ostream
-&(operator<<)(std::ostream &os, const TFHE::CipherText<SZ> &text) {
+template<std::size_t SZ> std::ostream &
+(operator<<)(std::ostream &os, const TFHE::CipherText<SZ> &text) {
     for (int i = 0; i < SZ; ++i)
         export_gate_bootstrapping_ciphertext_toStream(os, text[i], text.get_raw_parameter());
     return os;

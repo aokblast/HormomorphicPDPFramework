@@ -20,10 +20,11 @@ namespace TFHE {
     class SecretKey {
     private:
         std::shared_ptr<TFheGateBootstrappingSecretKeySet> _key;
-
         explicit SecretKey(TFheGateBootstrappingSecretKeySet *key);
 
     public:
+				SecretKey() = default;
+
         friend class KeyGenerator;
 
         template<std::size_t SZ> friend
