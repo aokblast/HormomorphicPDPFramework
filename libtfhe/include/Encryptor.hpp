@@ -9,10 +9,10 @@ namespace TFHE {
     template<std::size_t SZ>
     class Encryptor {
     private:
-        SecretKey _key;
-        Parameter _param;
+				SecretKey _key;
+				Parameter _param;
     public:
-        Encryptor(const SecretKey &key, const Parameter &param) : _key(key) {
+        Encryptor(SecretKey key, const Parameter &param) : _key(std::move(key)) {
             _param = param;
         }
 
