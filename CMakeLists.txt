@@ -39,5 +39,5 @@ target_link_libraries(Server LINK_PUBLIC ${Boost_LIBRARIES})
 target_link_libraries(Client SEAL::seal)
 target_link_libraries(Client LINK_PUBLIC ${Boost_LIBRARIES})
 
-target_link_libraries(SHA256Test libtfhe tfhe-spqlios-fma)
-target_link_libraries(MD5Test libtfhe tfhe-spqlios-fma)
+target_link_libraries(SHA256Test libtfhe tfhe-spqlios-avx)
+target_link_libraries(MD5Test libtfhe tfhe-spqlios-avx)
