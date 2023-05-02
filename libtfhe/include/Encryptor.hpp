@@ -12,7 +12,7 @@ namespace TFHE {
         SecretKey _key;
         Parameter _param;
     public:
-        Encryptor(SecretKey &key, const Parameter &param) : _key(key) {
+        Encryptor(const SecretKey &key, const Parameter &param) : _key(key) {
             _param = param;
         }
 

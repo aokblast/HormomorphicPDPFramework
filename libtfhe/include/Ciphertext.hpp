@@ -23,7 +23,7 @@ template<std::size_t SZ> std::istream &
 }
 
 template<std::size_t SZ> std::ostream &
-(operator<<)(std::ostream &os, const TFHE::CipherText<SZ> &text) {
+operator<<(std::ostream &os, const TFHE::CipherText<SZ> &text) {
     for (int i = 0; i < SZ; ++i)
         export_gate_bootstrapping_ciphertext_toStream(os, text[i], text.get_raw_parameter());
     return os;
@@ -36,18 +36,18 @@ namespace TFHE {
         std::unique_ptr<LweSample, void (*)(LweSample *)> _sample;
         Parameter _p;
 
-        TFheGateBootstrappingParameterSet
-        *get_raw_parameter() const {
+        TFheGateBootstrappingParameterSet *
+				get_raw_parameter() const {
             return _p._param.get();
         }
 
-        LweSample
-        *operator[](size_t idx) {
+        LweSample *
+				operator[](size_t idx) {
             return _sample.get() + idx;
         }
 
-        const LweSample
-        *operator[](size_t idx) const {
+        const LweSample *
+				operator[](size_t idx) const {
             return _sample.get() + idx;
         }
 
@@ -93,4 +93,5 @@ namespace TFHE {
         template<std::size_t T> friend std::ostream &
         (::operator<<)(std::ostream &os, const TFHE::CipherText<T> &text);
     };
+
 }

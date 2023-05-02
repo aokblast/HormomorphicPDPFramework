@@ -13,7 +13,7 @@ SET(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall")
 
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 INCLUDE_DIRECTORIES(./Hash)
-INCLUDE_DIRECTORIES( ./libtfhe/include /usr/local/include/)
+INCLUDE_DIRECTORIES(./libtfhe/include /usr/local/include/)
 INCLUDE_DIRECTORIES(./HashTree/include)
 
 
@@ -25,10 +25,13 @@ add_executable(Server Server/Server.cpp Server/Server.h Server/main.cpp common.h
 add_executable(Client Client/Client.cpp Client/Client.h Client/main.cpp common.h)
 add_executable(SHA256Test Hash/SHA256.cpp Hash/SHA256Example.cpp)
 add_executable(MD5Test Hash/MD5.cpp Hash/MD5Example.cpp)
+add_executable(Hasher hasher.cpp)
 
 target_link_libraries(HormomorphicHashChecker libhashtree)
-target_link_libraries(HormomorphicHashChecker SEAL::seal)
 target_link_libraries(HormomorphicHashChecker libtfhe tfhe-spqlios-avx)
+
+target_link_libraries(Hasher libhashtree)
+target_link_libraries(Hasher libtfhe tfhe-spqlios-avx)
 
 target_link_libraries(Server SEAL::seal)
 target_link_libraries(Server LINK_PUBLIC ${Boost_LIBRARIES})
