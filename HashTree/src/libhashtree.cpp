@@ -24,9 +24,9 @@ HashTree::hash_files(const std::vector<file_stream_t> &files, const TFHE::CloudK
 		std::vector<HashTree::hash_value_t> res;
 		std::vector<std::future<hash_value_t>> promises;
 
-		for (int i = 0; i < files.size(); i += NTHREAD) {
-				for(int j = 0; j < NTHREAD && (i * NTHREAD + j) < files.size(); ++j)
-						promises.push_back(std::async(MD5::hash, std::cref(files[i * NTHREAD + j]), std::cref(key)));
+		for (int i = 0; i < files.size(); i += NTHREADS) {
+				for(int j = 0; j < NTHREADS && (i * NTHREADS + j) < files.size(); ++j)
+						promises.push_back(std::async(HASHNS::hash, std::cref(files[i * NTHREADS + j]), std::cref(key)));
 
 				for(auto &promise : promises)
 						res.emplace_back(promise.get()), std::cout << "file finished" << std::endl;
@@ -71,8 +71,8 @@ HashTree::_build_tree(std::vector<hash_value_t> hashes, const TFHE::CloudKey &ke
 		while(q.size() > 1) {
 				int sz = q.size();
 
-				for(int i = 0; (sz - i) > 1; i += NTHREAD * 2) {
-						for(int j = 0; j < (NTHREAD * 2) && (sz - (i * NTHREAD * 2 + j)) > 1; j += 2) {
+				for(int i = 0; (sz - i) > 1; i += NTHREADS * 2) {
+						for(int j = 0; j < (NTHREADS * 2) && (sz - (i * NTHREADS * 2 + j)) > 1; j += 2) {
 								auto left = q.front(); q.pop();
 								auto right = q.front(); q.pop();
 								file_stream_t msg;
@@ -88,7 +88,7 @@ HashTree::_build_tree(std::vector<hash_value_t> hashes, const TFHE::CloudKey &ke
 								auto *new_node = new _Node();
 
 								futures.push_back(std::async([new_node](const std::vector<TFHE::CipherText<8>>& msg, const TFHE::CloudKey &key){
-										new_node->hash_value = MD5::hash(msg, key); return new_node;}, std::move(msg), std::cref(key)));
+										new_node->hash_value = HASHNS::hash(msg, key); return new_node;}, std::move(msg), std::cref(key)));
 
 								new_node->left = left;
 								new_node->right = right;

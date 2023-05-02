@@ -1,13 +1,18 @@
 #include "libtfhe_core.h"
+#include "MD5.h"
+#include "SHA256.h"
 #include <memory>
 #include <vector>
 #include <array>
+
+
+namespace HASHNS = MD5;
 
 class HashTree {
 public:
     using file_stream_t = std::vector<TFHE::CipherText<8>>;
     using hash_value_t = std::array<TFHE::CipherText<32>, 4>;
-		const static int NTHREAD = 8;
+		const static int NTHREADS = 8;
 private:
     class _Node {
     public:
