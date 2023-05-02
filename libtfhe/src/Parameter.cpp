@@ -13,12 +13,14 @@ Parameter::Parameter(const TFheGateBootstrappingParameterSet *p) {
                                                                 [](TFheGateBootstrappingParameterSet *p) {});
 }
 
-std::ostream &operator<<(std::ostream &os, const Parameter &param) {
+std::ostream &
+operator<<(std::ostream &os, const Parameter &param) {
     export_tfheGateBootstrappingParameterSet_toStream(os, param._param.get());
     return os;
 }
 
-std::istream &operator>>(std::istream &is, Parameter &param) {
+std::istream &
+operator>>(std::istream &is, Parameter &param) {
     param._param.reset((new_tfheGateBootstrappingParameterSet_fromStream(is)));
     return is;
 }
