@@ -29,7 +29,7 @@ HashTree::hash_files(const std::vector<file_stream_t> &files, const TFHE::CloudK
 						promises.push_back(std::async(HASHNS::hash, std::cref(files[i * NTHREADS + j]), std::cref(key)));
 
 				for(auto &promise : promises)
-						res.emplace_back(promise.get()), std::cout << "file finished" << std::endl;
+						res.emplace_back(promise.get());
 
 				promises.clear();
 		}
@@ -64,8 +64,6 @@ HashTree::_build_tree(std::vector<hash_value_t> hashes, const TFHE::CloudKey &ke
 				q.emplace(new _Node(std::forward<hash_value_t>(hash)));
 		});
 
-		std::cout << "Start Build Tree" << std::endl;
-
 		std::vector<std::future<_Node *>> futures;
 
 		while(q.size() > 1) {
@@ -94,8 +92,6 @@ HashTree::_build_tree(std::vector<hash_value_t> hashes, const TFHE::CloudKey &ke
 								new_node->right = right;
 						}
 
-						std::cout << futures.size() << std::endl;
-
 						for(auto &future : futures)
 								q.push(future.get());
 
@@ -105,8 +101,6 @@ HashTree::_build_tree(std::vector<hash_value_t> hashes, const TFHE::CloudKey &ke
 				if((sz % 2) == 1)
 						q.push(q.front()), q.pop();
 		}
-
-		std::cout << "End Build Tree" << std::endl;
 
 		return q.front();
 }
