@@ -10,6 +10,8 @@
 #include "libtfhe_core.h"
 
 namespace MD5 {
+		using hash_value_t =  std::array<TFHE::CipherText<32>, 4>;
+
     std::array<TFHE::CipherText<32>, 4>
     hash(const std::vector<TFHE::CipherText<8>> &_message, const TFHE::CloudKey &key);
 }

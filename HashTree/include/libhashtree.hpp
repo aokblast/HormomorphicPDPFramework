@@ -6,18 +6,18 @@
 #include <array>
 
 
-namespace HASHNS = MD5;
+namespace HASHNS = SHA256;
 
 class HashTree {
 public:
     using file_stream_t = std::vector<TFHE::CipherText<8>>;
-    using hash_value_t = std::array<TFHE::CipherText<32>, 4>;
+    using hash_value_t = HASHNS::hash_value_t;
 		const static int NTHREADS = 8;
 private:
     class _Node {
     public:
         hash_value_t hash_value;
-        _Node *left, *right;
+        _Node *left{}, *right{};
 
 				explicit _Node(hash_value_t &&value);
 				_Node() = default;

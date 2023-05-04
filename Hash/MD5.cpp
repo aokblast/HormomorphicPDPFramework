@@ -51,7 +51,7 @@ namespace MD5 {
     }
 
 
-    array<CipherText<32>, 4>
+    hash_value_t
     hash(const vector<CipherText<8>> &_message, const CloudKey &key) {
         const Evaluator<32> word_eval(key);
         const Evaluator<8> byte_eval(key);

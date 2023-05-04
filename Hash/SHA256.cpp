@@ -30,7 +30,7 @@ namespace SHA256 {
         return eval.or_gate(eval.right_shift(num, offset), eval.left_shift(num, Sz - offset));
     }
 
-    array<CipherText<32>, 8>
+		hash_value_t
     hash(const vector <CipherText<8>> &_message, const CloudKey &key) {
         array<CipherText<32>, 8> res;
         array<CipherText<32>, 64> SEGMENT;

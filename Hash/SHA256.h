@@ -12,7 +12,9 @@
 
 
 namespace SHA256 {
-	std::array<TFHE::CipherText<32>, 8>
+		using hash_value_t = std::array<TFHE::CipherText<32>, 8>;
+
+		hash_value_t
     hash(const std::vector<TFHE::CipherText<8>>&, const TFHE::CloudKey &key);
 }
 
